@@ -1,0 +1,19 @@
+.FooterContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    flex-wrap: wrap;
+    border: 2px solid black;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+.FooterContainer > button{
+    cursor: pointer;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    color: black;
+    background-color: rgb(148, 148, 232);
+}

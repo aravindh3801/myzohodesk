@@ -1,0 +1,3 @@
+This package contains eslint rule that does not allow hardcoding of content. It recommends to use proper i18n keys. 
+The rule in this package checks for strings being used in a file and if the string has more that one word then it considers the string as hardcoding and performs various checks to make sure the string is not being used in a valid scenario.
+If the string doesn't fall under any valid category then it will be reported as hardcoding error 

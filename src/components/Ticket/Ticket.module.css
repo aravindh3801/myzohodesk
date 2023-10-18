@@ -1,0 +1,32 @@
+.ticketContainer{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 10px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    overflow-y: scroll;
+    
+}
+.ticket{   
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    border-bottom: 1px solid black;
+    margin: 5px 5px 0px 5px;
+}
+.ticket span{
+    width: 20%;
+    padding: 10px;
+    text-align: center;
+    font-size: large;
+    /* border: 1px solid red */
+
+}
+
+.ticket #ticketId {
+    border: 1px dotted blue;
+}
+.ticket #ticketSubject {
+}

@@ -1,0 +1,17 @@
+.ticketAddForm{
+    
+}
+.formContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.formContainer > div {
+    width: 50%;
+}
+.ticketAddFormFooter{
+
+}
+.emailField > textarea{
+    
+}
