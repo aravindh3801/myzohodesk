@@ -1,3 +1,53 @@
-This package contains eslint rule that does not allow hardcoding of content. It recommends to use proper i18n keys. 
-The rule in this package checks for strings being used in a file and if the string has more that one word then it considers the string as hardcoding and performs various checks to make sure the string is not being used in a valid scenario.
-If the string doesn't fall under any valid category then it will be reported as hardcoding error 
+# eslint-plugin-no-hardcoding
+
+To prevent hardcoding content 
+
+## Installation
+
+You'll first need to install [ESLint](http://eslint.org):
+
+```
+$ npm i eslint --save-dev
+```
+
+Next, install `eslint-plugin-no-hardcoding`:
+
+```
+$ npm install eslint-plugin-no-hardcoding --save-dev
+```
+
+**Note:** If you installed ESLint globally (using the `-g` flag) then you must also install `eslint-plugin-zsecurity` globally.
+
+## Usage
+
+Add `no-hardcoding` to the plugins section of your `.eslintrc` configuration file.
+
+```json
+{
+  "plugins": ["no-hardcoding"]
+}
+```
+
+Then configure the rules you want to use under the rules section.
+
+```json
+{
+  "rules": {
+    "no-hardcoding/no-hardcoding": 2
+  }
+}
+```
+
+**Note:** For working of no-hardcoding rule of this plugin a properties file of name excludes should be present in the build/eslint in the root dirctory of the project
+
+## List of supported rules
+
+- no-hardcoding/no-hardcoding,
+
+
+
+
+
+
+
+

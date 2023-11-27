@@ -3,8 +3,10 @@ import Ticket from "../Ticket/Ticket";
 import Form from "../Form";
 import Header from "../Homepage/Header";
 import ListViewHeader from "./ListViewHeader";
+import BulkUpdateComponent from '../BulkUpdateComponent/BulkUpdateComponent'
+import {connect} from 'react-redux'
 
-export default class TicketListView extends Component{
+class TicketListView extends Component{
     constructor(props){
         super(props);
         this.state ={
@@ -16,49 +18,49 @@ export default class TicketListView extends Component{
             ticketsToBeEdited:[],
             isEditTicketForm: false
         }
-        this.addTicket = this.addTicket.bind(this)
-        this.deleteTicket = this.deleteTicket.bind(this)
-        this.editTicket = this.editTicket.bind(this)
+        //this.addTicket = this.addTicket.bind(this)
+        //this.deleteTicket = this.deleteTicket.bind(this)
+        this.preFillEditTicket = this.preFillEditTicket.bind(this)
         this.decideHomePage = this.decideHomePage.bind(this)
 
     }
-    addTicket = (obj) => {   
-        const {tickets} = this.state
-        //const prevState = {...this.state}
-        let isATicketNeedToBeEdited = tickets.some(ticket => ticket.id === obj.id)
-        if(!isATicketNeedToBeEdited){
-            this.setState((prevState) => {
-                return {
-                    ...prevState,
-                    isTicketListView:true,
-                    isAddTicketPage:false,
-                    isEditTicketForm:false,
-                    tickets: [...prevState.tickets,{id:obj.id,subject:obj.subject.value,email:obj.email.value,status:obj.status.value,owner:obj.owner.value}]
-                }
-            })
-        }
-        else{
-            let editTicket = tickets.find(ticket => ticket.id === obj.id)
-            editTicket.id = obj.id
-            editTicket.email = obj.email.value
-            editTicket.subject = obj.subject.value
-            editTicket.status = obj.status.value
-            editTicket.owner = obj.owner.value
-            let updatedTicketlist = tickets.map(ticket => {
-                ticket.id === obj.id ? ticket=editTicket : ticket=ticket
-                return ticket
-            })
-            this.setState((prevState) => {
-                return {
-                    ...prevState,
-                    isTicketListView:true,
-                    isAddTicketPage:false,
-                    isEditTicketForm:false,
-                    tickets: updatedTicketlist
-                }
-            })
-        }               
-    }
+    // addTicket = (obj) => {   
+    //     const {tickets} = this.state
+    //     //const prevState = {...this.state}
+    //     let isATicketNeedToBeEdited = tickets.some(ticket => ticket.id === obj.id)
+    //     if(!isATicketNeedToBeEdited){
+    //         this.setState((prevState) => {
+    //             return {
+    //                 ...prevState,
+    //                 isTicketListView:true,
+    //                 isAddTicketPage:false,
+    //                 isEditTicketForm:false,
+    //                 tickets: [...prevState.tickets,{id:obj.id,subject:obj.subject.value,email:obj.email.value,status:obj.status.value,owner:obj.owner.value}]
+    //             }
+    //         })
+    //     }
+    //     else{
+    //         let editTicket = tickets.find(ticket => ticket.id === obj.id)
+    //         editTicket.id = obj.id
+    //         editTicket.email = obj.email.value
+    //         editTicket.subject = obj.subject.value
+    //         editTicket.status = obj.status.value
+    //         editTicket.owner = obj.owner.value
+    //         let updatedTicketlist = tickets.map(ticket => {
+    //             ticket.id === obj.id ? ticket=editTicket : ticket=ticket
+    //             return ticket
+    //         })
+    //         this.setState((prevState) => {
+    //             return {
+    //                 ...prevState,
+    //                 isTicketListView:true,
+    //                 isAddTicketPage:false,
+    //                 isEditTicketForm:false,
+    //                 tickets: updatedTicketlist
+    //             }
+    //         })
+    //     }               
+    // }
     deleteTicket =(id) =>{
         const {tickets} = this.state
         let ticketsCount = tickets.length
@@ -75,18 +77,17 @@ export default class TicketListView extends Component{
             alert('There must be atleast one ticket present!')
         }
     }
-    editTicket = (id) =>{
-        const {tickets} = this.state
-        let ticketToBeEdited = tickets.filter(ticket => ticket.id === id)
+    preFillEditTicket = () =>{
+        // const {tickets} = this.props
+        // let ticketToBeEdited = tickets.filter(ticket => ticket.id === id)
         this.setState((prevState) =>{
             return{
                 ...prevState,
                 isEditTicketForm: true,
                 isTicketListView:false,
                 isAddTicketPage: true,
-                ticketsToBeEdited: ticketToBeEdited
             }
-        })        
+        })
     }
     
     decideHomePage = (ticketListViewPage,addTicketPage) =>{
@@ -99,28 +100,46 @@ export default class TicketListView extends Component{
         })
     }
     render(){
-        const {isTicketListView,isAddTicketPage,tickets,isEditTicketForm,ticketsToBeEdited} = this.state
+        const {tickets} = this.props
+        const {isTicketListView,isAddTicketPage,isEditTicketForm,ticketsToBeEdited} = this.state
         return (
           <div>
             <Header decideHomePage={this.decideHomePage} />
             {isTicketListView ? (
                 <div>
                     <ListViewHeader />
-                    <Ticket tickets={tickets} deleteTicket={this.deleteTicket} editTicket={this.editTicket}/>
+                    <Ticket tickets={tickets} preFillEditTicket={this.preFillEditTicket}/>
+                    
               </div>
             ) : isAddTicketPage ? (
               <Form
                 ticketsCount={tickets.length}
-                addTicket={this.addTicket}
+                //addTicket={this.addTicket}
                 decideHomePage={this.decideHomePage}
                 isEditTicketForm={isEditTicketForm}
-                ticketToBeEdited={ticketsToBeEdited}
+                //ticketToBeEdited={ticketsToBeEdited}
               />
             ) : null}
           </div>
         );
     }
 }
-    
+
+function mapStateToProps(state){
+    return{
+        tickets: state.tickets
+
+    }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         ticketToBeEdited: 
+//     }
+// }
+//<BulkUpdateComponent />
+ 
+
+export default connect(mapStateToProps)(TicketListView)
 
 

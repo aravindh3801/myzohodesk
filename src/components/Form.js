@@ -7,18 +7,29 @@ import styles from './Form.module.css'
 // import TicketSubject from "./TicketSubject/TicketSubject";
 import Dropdown from "./Dropdown/Dropdown";
 import Footer from "./Footer/Footer";
+import {addTicket} from '../actionsCreators/actionsCreators'
+import {connect} from 'react-redux'
+import {store} from '../App'
 class Form extends Component{
 
     constructor(props){
         super(props);
-        const {ticketToBeEdited,isEditTicketForm} = this.props
+        const {addTicketFormFields,isEditTicketForm,ticketToBeEdited} = this.props
+        const {email,subject,status,owner} = addTicketFormFields
         this.state = {
-            email: {id:'email',type:'field',displayLabel:'Email',value: isEditTicketForm ? ticketToBeEdited[0].email : '',isMandatory:true},
-            subject: {id:'subject',type:'field',displayLabel:'Subject',value: isEditTicketForm ? ticketToBeEdited[0].subject :''},
-            status: {id:'status',type:'picklist',displayLabel:'Status',options:['Open','Closed','Escalated'],value:isEditTicketForm ? ticketToBeEdited[0].status :'Open'},
-            owner: {id:'owner',type:'picklist',displayLabel:'Owner',options:['Agent 1','Agent 2','Agent 3'],value: isEditTicketForm ? ticketToBeEdited[0].owner : 'Agent 1'},
-            ticketToBeEdited:[]
+            email: {...email,value: isEditTicketForm ? ticketToBeEdited.email : '',isMandatory:true},
+            subject: {...subject,value: isEditTicketForm ? ticketToBeEdited.subject :''},
+            status: {...status,value:isEditTicketForm ? ticketToBeEdited.status :'Open'},
+            owner: {...owner,value: isEditTicketForm ? ticketToBeEdited.owner : 'Agent 1'},
+            //ticketToBeEdited:[]
         }
+        // this.state = {
+        //     email: {id:'email',type:'field',displayLabel:'Email',value: isEditTicketForm ? ticketToBeEdited.email : '',isMandatory:true},
+        //     subject: {id:'subject',type:'field',displayLabel:'Subject',value: isEditTicketForm ? ticketToBeEdited.subject :''},
+        //     status: {id:'status',type:'picklist',displayLabel:'Status',options:['Open','Closed','Escalated'],value:isEditTicketForm ? ticketToBeEdited.status :'Open'},
+        //     owner: {id:'owner',type:'picklist',displayLabel:'Owner',options:['Agent 1','Agent 2','Agent 3'],value: isEditTicketForm ? ticketToBeEdited.owner : 'Agent 1'},
+        //     //ticketToBeEdited:[]
+        // }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.emailValidation = this.emailValidation.bind(this)       
@@ -37,11 +48,11 @@ class Form extends Component{
                 <form className={styles.formContainer}>
                 <div className={styles.emailField}>
                     <Label field={email} />
-                    <textarea  defaultValue={isEditTicketForm ? ticketToBeEdited[0].email : ''} id={email.id} onChange={(event,isEditTicketForm) => this.handleChange(event,isEditTicketForm)} />
+                    <textarea  defaultValue={isEditTicketForm ? ticketToBeEdited.email : ''} id={email.id} onChange={(event,isEditTicketForm) => this.handleChange(event,isEditTicketForm)} />
                 </div>
                 <div>
                     <Label field={subject} />
-                    <textarea  defaultValue={isEditTicketForm ? ticketToBeEdited[0].subject : ''} id={subject.id} onChange={this.handleChange}/>
+                    <textarea  defaultValue={isEditTicketForm ? ticketToBeEdited.subject : ''} id={subject.id} onChange={this.handleChange}/>
                 </div>
                 <div>
                     <Label field={status} />
@@ -81,7 +92,7 @@ class Form extends Component{
 
         if(isValidEmail){
             addTicket({
-                id: isEditTicketForm ? ticketToBeEdited[0].id : ticketsCount +1,
+                id: isEditTicketForm ? ticketToBeEdited.id : ticketsCount +1,
                 email,
                 subject,
                 status,
@@ -101,7 +112,22 @@ class Form extends Component{
     }
     
 }
-export default Form
+const mapDispatchToProps = (dispatch) =>{
+    return{
+        addTicket: (ticket) => {
+            dispatch(addTicket(ticket))
+            console.log('New ticket dispatched',store.getState())
+        }
+    }
+    
+}
+const mapStateToProps = (state) => {
+    return{
+        ticketToBeEdited: state.ticketToBeEdited,
+        addTicketFormFields: state.addTicketFormFields
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(Form)
 
 
 // return(

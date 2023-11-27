@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-no-hardcoding",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "This package contains eslint rule that restricts hardcoding content in react based applications ",
   "main": "lib/index.js",
   "scripts": {
